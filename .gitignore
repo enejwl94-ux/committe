@@ -17,3 +17,5 @@ myenv/
 test.py/
 
 *.db
+*.sqlite
+*.sqlite3
