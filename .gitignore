@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+.venv/
+venv/
+myenv/
+*/.venv/
+*/venv/
+*/myenv/
+
+.env
+.env.*
+
+*.log
+
+test.py/
