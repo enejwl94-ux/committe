@@ -24,7 +24,7 @@ c = st.session_state.c
 
 
 def refresh_db_connection():
-    """위원/위원회 갱신 직후 동일 세션에서 최신 DB 상태를 다시 읽도록 연결을 재생성한다."""
+    """위원/위원회 갱신 직후 동일 세션에서 최신 DB 상태를 읽도록 연결을 재생성한다."""
     global conn, c
 
     existing_cursor = st.session_state.get("c")
