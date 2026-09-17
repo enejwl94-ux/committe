@@ -74,28 +74,41 @@
       --ripple-x: 50%;
       --impact-y: 52%;
       position: fixed;
-      z-index: 40;
+      z-index: 9999;
       inset: 0;
       overflow: hidden;
       pointer-events: none;
       visibility: hidden;
     }
     .water-transition.is-playing { visibility: visible; }
+    .water-transition.is-reduced { visibility: visible; }
     .water-drop {
       position: absolute;
       z-index: 3;
       left: var(--ripple-x);
       top: -42px;
-      width: 19px;
-      height: 25px;
+      width: 27px;
+      height: 36px;
       opacity: 0;
       border-radius: 54% 46% 62% 38% / 68% 51% 49% 32%;
       background: linear-gradient(145deg, rgba(103, 232, 249, .96), rgba(15, 118, 110, .92));
-      box-shadow: inset 4px 4px 7px rgba(255, 255, 255, .48), 0 6px 15px rgba(8, 47, 73, .24);
+      box-shadow: inset 6px 5px 9px rgba(255, 255, 255, .62), 0 9px 22px rgba(8, 47, 73, .38);
+      filter: saturate(1.25);
       transform: translateX(-50%) rotate(45deg);
     }
+    .water-drop::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 11px;
+      left: 6px;
+      top: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .68);
+      filter: blur(.4px);
+    }
     .water-transition.is-playing .water-drop {
-      animation: drop-fall 700ms cubic-bezier(.48, .02, .74, .42) both;
+      animation: drop-fall 460ms cubic-bezier(.48, .02, .74, .42) both;
     }
     .ripple-origin {
       position: absolute;
@@ -109,49 +122,55 @@
       position: absolute;
       left: 0;
       top: 0;
-      width: 38px;
-      height: 13px;
+      width: 72px;
+      height: 26px;
       opacity: 0;
-      border: 2px solid rgba(15, 118, 110, .64);
+      border: 3px solid rgba(8, 109, 117, .82);
       border-radius: 50%;
-      box-shadow: 0 0 16px rgba(45, 212, 191, .18), inset 0 0 12px rgba(103, 232, 249, .14);
+      box-shadow: 0 0 22px rgba(45, 212, 191, .34), inset 0 0 16px rgba(103, 232, 249, .26);
       transform: translate(-50%, -50%) scale(.15);
     }
-    .water-transition.is-playing .ripple-ring:nth-child(1) { animation: ripple-spread 820ms 510ms var(--ease) both; }
-    .water-transition.is-playing .ripple-ring:nth-child(2) { animation: ripple-spread 900ms 600ms var(--ease) both; }
-    .water-transition.is-playing .ripple-ring:nth-child(3) { animation: ripple-spread 980ms 690ms var(--ease) both; }
+    .water-transition.is-playing .ripple-ring:nth-child(1) { animation: ripple-spread 620ms 330ms var(--ease) both; }
+    .water-transition.is-playing .ripple-ring:nth-child(2) { animation: ripple-spread 670ms 400ms var(--ease) both; }
+    .water-transition.is-playing .ripple-ring:nth-child(3) { animation: ripple-spread 720ms 470ms var(--ease) both; }
     .water-glow {
       position: absolute;
       z-index: 1;
       left: var(--ripple-x);
       top: var(--impact-y);
-      width: 24px;
-      height: 24px;
+      width: 42px;
+      height: 42px;
       opacity: 0;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, .82), rgba(45, 212, 191, .26) 38%, transparent 72%);
+      background: radial-gradient(circle, rgba(255, 255, 255, .98), rgba(45, 212, 191, .58) 36%, transparent 72%);
       transform: translate(-50%, -50%) scale(.3);
     }
-    .water-transition.is-playing .water-glow { animation: water-impact 760ms 500ms var(--ease) both; }
+    .water-transition.is-playing .water-glow { animation: water-impact 600ms 330ms var(--ease) both; }
     .water-sheen {
       position: absolute;
       inset: 0;
       opacity: 0;
-      background: radial-gradient(ellipse at var(--ripple-x) var(--impact-y), rgba(103, 232, 249, .12), transparent 38%);
+      background:
+        radial-gradient(ellipse at var(--ripple-x) var(--impact-y), rgba(255, 255, 255, .38), rgba(45, 212, 191, .22) 18%, transparent 45%),
+        rgba(8, 51, 68, .025);
     }
-    .water-transition.is-playing .water-sheen { animation: sheen-flash 760ms 510ms ease-out both; }
+    .water-transition.is-playing .water-sheen { animation: sheen-flash 660ms 330ms ease-out both; }
+    .water-transition.is-reduced .water-drop { display: none; }
+    .water-transition.is-reduced .water-sheen { opacity: .58; }
+    .water-transition.is-reduced .water-glow { opacity: .7; transform: translate(-50%, -50%) scale(5); }
+    .water-transition.is-reduced .ripple-ring:first-child { opacity: .72; transform: translate(-50%, -50%) scale(10); }
     @keyframes drop-fall {
       0% { top: -42px; opacity: 0; transform: translateX(-50%) rotate(45deg) scale(.7); }
       12% { opacity: 1; }
-      72% { width: 19px; height: 25px; }
-      86% { top: calc(var(--impact-y) - 19px); width: 17px; height: 28px; opacity: 1; transform: translateX(-50%) rotate(45deg) scale(1); }
-      94% { top: calc(var(--impact-y) - 5px); width: 25px; height: 8px; opacity: .88; transform: translateX(-50%) rotate(45deg) scale(1); }
-      100% { top: var(--impact-y); width: 31px; height: 5px; opacity: 0; transform: translateX(-50%) rotate(45deg) scale(1.08); }
+      72% { width: 27px; height: 36px; }
+      86% { top: calc(var(--impact-y) - 26px); width: 24px; height: 40px; opacity: 1; transform: translateX(-50%) rotate(45deg) scale(1); }
+      94% { top: calc(var(--impact-y) - 6px); width: 38px; height: 11px; opacity: .92; transform: translateX(-50%) rotate(45deg) scale(1); }
+      100% { top: var(--impact-y); width: 46px; height: 7px; opacity: 0; transform: translateX(-50%) rotate(45deg) scale(1.08); }
     }
     @keyframes ripple-spread {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(.15); }
-      12% { opacity: .85; }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(18); border-width: .5px; }
+      12% { opacity: .95; }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(24); border-width: .5px; }
     }
     @keyframes water-impact {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(.3); }
@@ -1007,24 +1026,29 @@
       function navigate(index, originX) {
         const next = clamp(index);
         if (next === current || transitionLocked) return;
-        if (reduceMotion.matches) {
-          showSlide(next);
-          return;
-        }
-
         transitionLocked = true;
         const fallbackX = next > current ? 63 : 37;
         const rippleX = Math.max(18, Math.min(82, originX ?? fallbackX));
         waterTransition.style.setProperty("--ripple-x", `${rippleX}%`);
-        waterTransition.classList.remove("is-playing");
+        waterTransition.classList.remove("is-playing", "is-reduced");
         void waterTransition.offsetWidth;
-        waterTransition.classList.add("is-playing");
 
-        window.setTimeout(() => showSlide(next), 555);
+        if (reduceMotion.matches) {
+          waterTransition.classList.add("is-reduced");
+          window.setTimeout(() => showSlide(next), 100);
+          window.setTimeout(() => {
+            waterTransition.classList.remove("is-reduced");
+            transitionLocked = false;
+          }, 260);
+          return;
+        }
+
+        waterTransition.classList.add("is-playing");
+        window.setTimeout(() => showSlide(next), 390);
         window.setTimeout(() => {
           waterTransition.classList.remove("is-playing");
           transitionLocked = false;
-        }, 1540);
+        }, 1220);
       }
 
       function move(direction, originX) { navigate(current + direction, originX); }
